@@ -55,30 +55,22 @@ def reflections_and_projections(points):
 	return return_matrix
 
 def normalize(image):
+	def normal(p, max1, min1):
+		coeff = 255 / (max1 - min1)
+		return (coeff * (p - min1))
 	min_val = np.amin(image)
 	max_val = np.amax(image)
 	coeff = 255 / (max_val - min_val)
+	return normal(image, max_val, min_val)	
+
+def sigmoid_normalize(image, a):
+	import math
 	return_matrix = []
 	for vec in image:
 		temp = []
 		for num in vec:
-			temp.append(coeff * (num - min_val))
+			exp = ((num - 128) * (a ** -1) * (-1))
+			base = 1 + (math.exp(exp))
+			temp.append(255 * (base ** -1))
 		return_matrix.append(temp)
-	return return_matrix	
-
-def sigmoid_normalize(image, a):
-    return_matrix = []
-    for vec in image:
-    	temp = []
-    	for num in vec:
-    		exp = ((num - 128) * (a ** -1) * (-1))
-    		base = 1 + (e ** exp)
-    		temp.append(255 * (base ** -1))
-    	return_matrix.append(temp)
-    return return_matrix
-
-
-
-
-
-
+	return return_matrix
